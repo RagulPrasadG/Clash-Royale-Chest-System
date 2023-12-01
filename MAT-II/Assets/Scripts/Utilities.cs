@@ -1,3 +1,4 @@
+
 public enum ChestStatus
 {
     LOCKED,
@@ -13,3 +14,28 @@ public enum ChestType
     EPIC,
     LEGENDARY
 }
+
+
+public enum RewardType
+{
+    COINS,
+    GEMS
+}
+
+[System.Serializable]
+public struct RewardData
+{
+    public UnityEngine.Sprite rewardSprite;
+    public RewardType rewardType;
+    public int minimumAmount;
+    public int maximumAmount;
+}
+
+
+public struct ChestData
+{
+    public ChestDataScriptableObject chestDataSO;
+    public ChestStatus chestStatus;
+    public float currentTimer;
+}
+

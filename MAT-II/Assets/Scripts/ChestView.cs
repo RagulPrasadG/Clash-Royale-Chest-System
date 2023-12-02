@@ -20,8 +20,7 @@ public class ChestView : MonoBehaviour
 
     public void OnClickChestButton()
     {
-        //Open Popup via event
-
+        Debug.Log("Chest Clicked!");
     }
 
     public void UpdateChestStatusText(string status) => chestStatusText.text = status;

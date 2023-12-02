@@ -9,11 +9,13 @@ public class ChestController
 
     public ChestData Data => chestData;
 
-    public ChestController(ChestView chestViewPrefab,ChestData chestData)
+    public ChestController(ChestView chestViewPrefab,ChestDataScriptableObject chestDataScriptableObject)
     {
         this.chestView = Object.Instantiate(chestViewPrefab);
         this.chestView.SetController(this);
-        this.chestData = chestData;
+        this.chestData = new ChestData {
+            chestDataSO = chestDataScriptableObject
+        };
         SetChestStatus(ChestStatus.LOCKED);
     }
 
@@ -29,5 +31,19 @@ public class ChestController
         if (chestStatus == ChestStatus.LOCKED)
             chestView.UpdateChestStatusText("LOCKED");
     }
-   
+
+    public void SetSlot(ChestSlotController chestSlotController)
+    {
+        this.chestView.transform.SetParent((RectTransform)chestSlotController.View.transform);
+        this.chestView.transform.position = chestSlotController.View.transform.position;
+    }
+
+    public void SetParent(RectTransform parent)
+    {
+        chestView.transform.SetParent(parent);
+
+    }
+
+    public void Destroy() => Object.Destroy(this.chestView.gameObject);
+
 }

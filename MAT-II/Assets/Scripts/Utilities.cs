@@ -6,7 +6,6 @@ public enum ChestStatus
     UNLOCKED,
     COLLECTED
 }
-
 public enum ChestType
 {
     COMMON,
@@ -14,8 +13,6 @@ public enum ChestType
     EPIC,
     LEGENDARY
 }
-
-
 public enum RewardType
 {
     COINS,
@@ -38,4 +35,8 @@ public struct ChestData
     public ChestStatus chestStatus;
     public float currentTimer;
 }
-
+public enum PopupType
+{
+    INFO,
+    CHESTOPENCONFIRMATION
+}

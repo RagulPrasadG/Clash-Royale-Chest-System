@@ -14,6 +14,7 @@ public class ChestView : MonoBehaviour
     private void Awake()
     {
         chestButton.onClick.AddListener(OnClickChestButton);  
+        
     }
 
     public void SetController(ChestController chestController) => this.chestController = chestController;
@@ -21,10 +22,15 @@ public class ChestView : MonoBehaviour
     public void OnClickChestButton()
     {
         Debug.Log("Chest Clicked!");
+        chestController.Unlock();
     }
 
+    public void StartTimerCouroutine() => StartCoroutine(chestController.StartTimer());
+    public void StopTimerCouroutine() => StopCoroutine(chestController.StartTimer());
+
+
     public void UpdateChestStatusText(string status) => chestStatusText.text = status;
-    public void UpdateChestTimerText(float timer) => chestTimerText.text = timer.ToString();
+    public void UpdateChestTimerText(string timer) => chestTimerText.text = timer;
 
 
 }

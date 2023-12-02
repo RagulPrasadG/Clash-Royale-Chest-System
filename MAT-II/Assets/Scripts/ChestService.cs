@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class ChestService : MonoBehaviour
 {
-    [SerializeField] Button addChestButton;
+    
     [SerializeField] RectTransform slotContainer;
     [SerializeField] ChestSlotView chestSlotView;
     [SerializeField] ChestView chestView;
     [SerializeField] GameDataScriptableObject gameDataScriptableObject;
 
-
+    private EventService eventService;
+    private UIService uIService;
     private List<ChestSlotController> slots = new List<ChestSlotController>();
 
     [Space(10)]
@@ -19,14 +20,21 @@ public class ChestService : MonoBehaviour
     public int maxSlot;
     public int maxQueue;
 
-    private void Awake()
-    {
-        addChestButton.onClick.AddListener(TryAddChest);
-    }
-
     private void Start()
     {
         CreateSlots();  
+    }
+
+    public void Init(EventService eventService,UIService uIService)
+    {
+        this.eventService = eventService;
+        this.uIService = uIService;
+        SetEvents();
+    }
+
+    public void SetEvents()
+    {
+        this.eventService.onAddChestButtonClicked.AddListener(TryAddChest);
     }
 
     public void CreateSlots()
@@ -59,7 +67,7 @@ public class ChestService : MonoBehaviour
             if (slot.isSlotEmpty)
                 return slot;
         }
-        Debug.Log("No free slots available!!");
+        uIService.ShowInfoPopup("No Free Slots Available!!");
         return null;
        
     }

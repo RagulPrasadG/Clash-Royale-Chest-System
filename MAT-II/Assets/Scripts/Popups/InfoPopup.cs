@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+using TMPro;
 public class InfoPopup : PopUp
 {
+    [SerializeField] Button okButton;
+    [SerializeField] TMP_Text messageText;
 
-    public override void Hide()
+    private string message { get; set; }
+
+    private void Awake()
     {
-        
+        okButton.onClick.AddListener(Hide);
     }
 
-    public override void Show()
+    public void SetMessageText(string message)
     {
-        
+        this.message = message;
+        messageText.text = message;
     }
 }

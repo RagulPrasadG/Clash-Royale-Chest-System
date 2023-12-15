@@ -9,6 +9,8 @@ public class EventService
     public EventController<ChestController> onChestButtonClicked;
     public EventController onClickUnlockWithTimer;
     public EventController onClickUnlockWithGems;
+    public EventController<ChestController> onChestTimerComplete;
+    public EventController<ChestController> onChestUnlocked;
 
     public EventService()
     {
@@ -16,7 +18,10 @@ public class EventService
         onChestButtonClicked = new EventController<ChestController>();
         onClickUnlockWithTimer = new EventController();
         onClickUnlockWithGems = new EventController();
+        onChestTimerComplete = new EventController<ChestController>();
+        onChestUnlocked = new EventController<ChestController>();
     }
+
 }
 
 public class EventController

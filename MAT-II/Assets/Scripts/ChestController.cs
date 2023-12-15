@@ -66,6 +66,8 @@ public class ChestController
         else
         {
             chestView.StopCoroutine(StartTimer());
+            this.chestView.openButton.gameObject.SetActive(true);
+            this.eventService.onChestTimerComplete.RaiseEvent(this);
         }
     }
 
@@ -80,11 +82,17 @@ public class ChestController
             case ChestStatus.QUEUED:
                 chestView.UpdateChestStatusText("QUEUED");
                 break;
+            case ChestStatus.UNLOCKED:
+                chestView.UpdateChestStatusText("UNLOCKED");
+                break;
         }
 
       
             
     }
+
+    public void Unlock() => this.eventService.onChestUnlocked.RaiseEvent(this);
+
 
     public void SetSlot(ChestSlotController chestSlotController)
     {

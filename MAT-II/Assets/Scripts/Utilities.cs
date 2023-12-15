@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+
 public enum ChestStatus
 {
     LOCKED,
@@ -27,6 +29,12 @@ public struct RewardData
     public RewardType rewardType;
     public int minimumAmount;
     public int maximumAmount;
+}
+
+[System.Serializable]
+public struct Rewards
+{
+    public List<RewardData> rewards;
 }
 
 

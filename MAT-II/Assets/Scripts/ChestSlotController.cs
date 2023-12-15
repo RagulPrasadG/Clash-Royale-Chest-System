@@ -5,7 +5,7 @@ using UnityEngine;
 public class ChestSlotController
 {
     private ChestSlotView chestSlotView;
-    private ChestController chest;
+    public ChestController chestController;
     public bool isSlotEmpty;
 
     public ChestSlotView View => chestSlotView;
@@ -22,7 +22,7 @@ public class ChestSlotController
         if (!isSlotEmpty)
             return;
 
-        this.chest = chestController;
+        this.chestController = chestController;
         isSlotEmpty = false;
     }
 
@@ -34,7 +34,8 @@ public class ChestSlotController
 
     public void RemoveChest()
     {
-        this.chest.Destroy();
-        chest = null;
+        this.isSlotEmpty = true;
+        this.chestController.Destroy();
+        chestController = null;
     }
 }

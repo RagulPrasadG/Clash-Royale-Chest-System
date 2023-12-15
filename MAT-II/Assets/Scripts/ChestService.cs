@@ -40,6 +40,8 @@ public class ChestService : MonoBehaviour
         this.eventService.onChestButtonClicked.AddListener(OnChestClicked);
         this.eventService.onClickUnlockWithGems.AddListener(OnUnlockWithGems);
         this.eventService.onClickUnlockWithTimer.AddListener(OnUnlockWithTimer);
+        this.eventService.onChestTimerComplete.AddListener(OnChestTimerComplete);
+        this.eventService.onChestUnlocked.AddListener(OnChestUnlocked);
     }
 
     public void CreateSlots()
@@ -52,6 +54,14 @@ public class ChestService : MonoBehaviour
         }
 
     }
+
+    public void OnChestUnlocked(ChestController chestController)
+    {
+        uIService.ShowRewardsPanel(chestController.Data.chestDataSO.rewardData);
+        ChestSlotController chestSlotController = slots.Find(chestSlot => chestSlot.chestController == chestController);
+        chestSlotController.RemoveChest();
+    }
+
 
     public void OnUnlockWithTimer()
     {
@@ -94,6 +104,7 @@ public class ChestService : MonoBehaviour
         {
             ChestController chestController = new ChestController(this.chestView, gameDataScriptableObject.GetRandomChestData(),eventService);
             chestController.SetSlot(freeSlot);
+            freeSlot.AddChest(chestController);
             freeSlot.isSlotEmpty = false;
         }
 
@@ -103,6 +114,19 @@ public class ChestService : MonoBehaviour
     {
         selectedChest = chestController;
         uIService.ShowUnlockConfirmationPopup(chestController);
+    }
+
+
+    public void OnChestTimerComplete(ChestController chestController)
+    {
+        chestController.SetChestStatus(ChestStatus.UNLOCKED);
+        chestsQueue.Dequeue();
+        ChestController nextchestController;
+        chestsQueue.TryPeek(out nextchestController);
+
+        if (nextchestController != null)
+            nextchestController.StartUnlockTimer();
+
     }
 
     public ChestSlotController GetFreeSlot()

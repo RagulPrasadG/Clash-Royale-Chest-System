@@ -43,4 +43,9 @@ public class UIService : MonoBehaviour
         unlockConfirmPopup.Show();
     }
 
+    public void ShowRewardsPanel(List<RewardData> rewardData)
+    {
+
+    }
+
 }

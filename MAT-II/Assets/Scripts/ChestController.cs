@@ -8,25 +8,28 @@ public class ChestController
     private ChestView chestView;
     private ChestData chestData;
     private float totalTimeInSeconds;
-    private float remainingTimeInSeconds;
     private WaitForSeconds waitSeconds = new WaitForSeconds(1f);
-
     public ChestData Data => chestData;
-    public ChestController(ChestView chestViewPrefab,ChestDataScriptableObject chestDataScriptableObject)
+    private EventService eventService;
+
+    public ChestController(ChestView chestViewPrefab,ChestDataScriptableObject chestDataScriptableObject, EventService eventService)
     {
         this.chestView = UnityEngine.Object.Instantiate(chestViewPrefab);
         this.chestView.SetController(this);
-        this.chestData = new ChestData {
+        this.chestData = new ChestData
+        {
             chestDataSO = chestDataScriptableObject
         };
+        this.chestView.SetChestSprite(chestData.chestDataSO.chestSprite);
         this.totalTimeInSeconds = chestData.chestDataSO.unlockTime * 60;
+        this.chestData.currentTime = totalTimeInSeconds;
+        this.eventService = eventService;
         SetChestStatus(ChestStatus.LOCKED);
     }
 
     public IEnumerator StartTimer()
     {
-        remainingTimeInSeconds = totalTimeInSeconds;
-        while (remainingTimeInSeconds >= 0)
+        while (chestData.currentTime >= 0)
         {
             yield return waitSeconds;
             UpdateTimer();
@@ -42,15 +45,19 @@ public class ChestController
         this.chestData.chestStatus = ChestStatus.UNLOCKING;
         this.chestView.UpdateChestStatusText("Unlocking...");
         this.chestView.StartTimerCouroutine();
+
     }
+
+    public void OnClickChest() => eventService.onChestButtonClicked.RaiseEvent(this);
+ 
 
     public void UpdateTimer() 
     {
-        remainingTimeInSeconds--;
+        chestData.currentTime--;
 
-        if (remainingTimeInSeconds >= 0)
+        if (chestData.currentTime >= 0)
         {
-            FormatTime(remainingTimeInSeconds);
+            FormatTime(chestData.currentTime);
         }
         else
         {
@@ -94,6 +101,12 @@ public class ChestController
             timerFormat =  $"{timeSpan.Seconds}s";
         }
         chestView.UpdateChestTimerText(timerFormat);
+    }
+
+    public float GetOpenNowCost()
+    {
+        float unlockCost = Mathf.Ceil((this.chestData.currentTime / 60) / 10);
+        return unlockCost;
     }
 
     public void Destroy() => UnityEngine.Object.Destroy(this.chestView.gameObject);

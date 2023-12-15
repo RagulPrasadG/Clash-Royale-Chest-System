@@ -36,4 +36,11 @@ public class UIService : MonoBehaviour
         infoPopUp.Show();
     }
 
+    public void ShowUnlockConfirmationPopup(ChestController chestController)
+    {
+        UnlockConfirmationPopup unlockConfirmPopup = popUpService.CreatePopup(PopupType.CHESTOPENCONFIRMATION, canvas) as UnlockConfirmationPopup;
+        unlockConfirmPopup.Init(chestController);
+        unlockConfirmPopup.Show();
+    }
+
 }

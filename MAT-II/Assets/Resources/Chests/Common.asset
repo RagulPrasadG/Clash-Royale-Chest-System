@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chestType: 0
   chestSprite: {fileID: 21300000, guid: 07c6542350a495b4e8aefc454bb6221c, type: 3}
-  unlockTime: 1
+  unlockTime: 11
   rewardData:
   - rewardSprite: {fileID: 21300000, guid: 3e4911c6fe19ca342b7026f70933a279, type: 3}
     rewardType: 0

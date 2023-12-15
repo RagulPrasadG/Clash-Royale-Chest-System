@@ -33,7 +33,9 @@ public struct ChestData
 {
     public ChestDataScriptableObject chestDataSO;
     public ChestStatus chestStatus;
+    public float currentTime;
 }
+
 public enum PopupType
 {
     INFO,

@@ -8,7 +8,7 @@ public class ChestView : MonoBehaviour
     [SerializeField] Button chestButton;
     [SerializeField] TMP_Text chestStatusText;
     [SerializeField] TMP_Text chestTimerText;
-
+    [SerializeField] Image chestImage;
     private ChestController chestController;
 
     private void Awake()
@@ -22,13 +22,13 @@ public class ChestView : MonoBehaviour
     public void OnClickChestButton()
     {
         Debug.Log("Chest Clicked!");
-        chestController.Unlock();
+        chestController.OnClickChest();
     }
 
     public void StartTimerCouroutine() => StartCoroutine(chestController.StartTimer());
     public void StopTimerCouroutine() => StopCoroutine(chestController.StartTimer());
 
-
+    public void SetChestSprite(Sprite sprite) => chestImage.sprite = sprite;
     public void UpdateChestStatusText(string status) => chestStatusText.text = status;
     public void UpdateChestTimerText(string timer) => chestTimerText.text = timer;
 

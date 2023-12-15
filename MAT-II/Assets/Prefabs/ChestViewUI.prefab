@@ -99,6 +99,7 @@ MonoBehaviour:
   chestButton: {fileID: 4278089333021506231}
   chestStatusText: {fileID: 4278089333812741274}
   chestTimerText: {fileID: 4278089334549406497}
+  chestImage: {fileID: 4278089334353389911}
 --- !u!1 &4278089333812741272
 GameObject:
   m_ObjectHideFlags: 0

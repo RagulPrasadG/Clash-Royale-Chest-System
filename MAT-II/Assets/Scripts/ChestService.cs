@@ -14,6 +14,7 @@ public class ChestService : MonoBehaviour
     private EventService eventService;
     private UIService uIService;
     private List<ChestSlotController> slots = new List<ChestSlotController>();
+    private ChestController selectedChest;
 
     [Space(10)]
     [Header("CONFIG")]
@@ -35,6 +36,7 @@ public class ChestService : MonoBehaviour
     public void SetEvents()
     {
         this.eventService.onAddChestButtonClicked.AddListener(TryAddChest);
+        this.eventService.onChestButtonClicked.AddListener(OnChestClicked);
     }
 
     public void CreateSlots()
@@ -53,11 +55,17 @@ public class ChestService : MonoBehaviour
         ChestSlotController freeSlot = GetFreeSlot();
         if(freeSlot != null)
         {
-            ChestController chestController = new ChestController(this.chestView, gameDataScriptableObject.GetRandomChestData());
+            ChestController chestController = new ChestController(this.chestView, gameDataScriptableObject.GetRandomChestData(),eventService);
             chestController.SetSlot(freeSlot);
             freeSlot.isSlotEmpty = false;
         }
 
+    }
+
+    public void OnChestClicked(ChestController chestController)
+    {
+        selectedChest = chestController;
+        uIService.ShowUnlockConfirmationPopup(chestController);
     }
 
     public ChestSlotController GetFreeSlot()

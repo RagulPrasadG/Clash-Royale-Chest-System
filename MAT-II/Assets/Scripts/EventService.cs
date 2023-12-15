@@ -6,11 +6,13 @@ using UnityEngine;
 public class EventService
 {
     public EventController onAddChestButtonClicked;
+    public EventController<ChestController> onChestButtonClicked;
 
     public EventService()
     {
         onAddChestButtonClicked = new EventController();
-  
+        onChestButtonClicked = new EventController<ChestController>();
+
     }
 }
 

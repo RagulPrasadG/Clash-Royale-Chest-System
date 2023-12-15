@@ -45,7 +45,9 @@ public class UIService : MonoBehaviour
 
     public void ShowRewardsPanel(List<RewardData> rewardData)
     {
-
+        RewardsPanel rewardsPanel = popUpService.CreatePopup(PopupType.REWARDSPANEL, canvas) as RewardsPanel;
+        rewardsPanel.Init(rewardData);
+        rewardsPanel.Show();
     }
 
 }

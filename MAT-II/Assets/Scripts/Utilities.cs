@@ -48,5 +48,6 @@ public struct ChestData
 public enum PopupType
 {
     INFO,
-    CHESTOPENCONFIRMATION
+    CHESTOPENCONFIRMATION,
+    REWARDSPANEL
 }

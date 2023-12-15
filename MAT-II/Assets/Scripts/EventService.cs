@@ -7,12 +7,15 @@ public class EventService
 {
     public EventController onAddChestButtonClicked;
     public EventController<ChestController> onChestButtonClicked;
+    public EventController onClickUnlockWithTimer;
+    public EventController onClickUnlockWithGems;
 
     public EventService()
     {
         onAddChestButtonClicked = new EventController();
         onChestButtonClicked = new EventController<ChestController>();
-
+        onClickUnlockWithTimer = new EventController();
+        onClickUnlockWithGems = new EventController();
     }
 }
 

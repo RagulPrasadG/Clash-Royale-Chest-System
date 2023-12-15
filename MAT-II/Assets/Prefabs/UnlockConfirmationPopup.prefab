@@ -777,7 +777,7 @@ MonoBehaviour:
   popupType: 1
   closeButton: {fileID: 6773853894184716241}
   unlockWithTimerButton: {fileID: 6349276691219802201}
-  unlockWithGem: {fileID: 4924202539444326406}
+  unlockWithGemButton: {fileID: 4924202539444326406}
   chestImage: {fileID: 4924202539179941455}
   gemText: {fileID: 4924202540537933165}
 --- !u!1 &6349276691219802199

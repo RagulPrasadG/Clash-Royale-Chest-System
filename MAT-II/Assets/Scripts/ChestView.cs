@@ -14,7 +14,6 @@ public class ChestView : MonoBehaviour
     private void Awake()
     {
         chestButton.onClick.AddListener(OnClickChestButton);  
-        
     }
 
     public void SetController(ChestController chestController) => this.chestController = chestController;
@@ -32,5 +31,8 @@ public class ChestView : MonoBehaviour
     public void UpdateChestStatusText(string status) => chestStatusText.text = status;
     public void UpdateChestTimerText(string timer) => chestTimerText.text = timer;
 
-
+    public void RemoveListeners()
+    {
+        chestButton.onClick.RemoveAllListeners();
+    }
 }

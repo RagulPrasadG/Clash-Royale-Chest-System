@@ -15,6 +15,7 @@ public class ChestService : MonoBehaviour
     private UIService uIService;
     private List<ChestSlotController> slots = new List<ChestSlotController>();
     private ChestController selectedChest;
+    private Queue<ChestController> chestsQueue = new Queue<ChestController>();
 
     [Space(10)]
     [Header("CONFIG")]
@@ -37,6 +38,8 @@ public class ChestService : MonoBehaviour
     {
         this.eventService.onAddChestButtonClicked.AddListener(TryAddChest);
         this.eventService.onChestButtonClicked.AddListener(OnChestClicked);
+        this.eventService.onClickUnlockWithGems.AddListener(OnUnlockWithGems);
+        this.eventService.onClickUnlockWithTimer.AddListener(OnUnlockWithTimer);
     }
 
     public void CreateSlots()
@@ -47,6 +50,40 @@ public class ChestService : MonoBehaviour
             chestSlotController.SetParent(slotContainer);
             slots.Add(chestSlotController);
         }
+
+    }
+
+    public void OnUnlockWithTimer()
+    {
+        if (chestsQueue.Count > maxQueue)
+            return;
+            
+        if(chestsQueue.Count > 0)
+        {
+            foreach (var chest in chestsQueue)
+            {
+                if (chest.Data.chestStatus == ChestStatus.UNLOCKING)
+                {
+                    selectedChest.SetChestStatus(ChestStatus.QUEUED);
+                    selectedChest.RemoveListeners();
+                    chestsQueue.Enqueue(selectedChest);
+                    selectedChest = null;
+                    return;
+                }
+
+            }
+        }
+
+        selectedChest.StartUnlockTimer();
+        selectedChest.RemoveListeners();
+        chestsQueue.Enqueue(selectedChest);
+        selectedChest = null;
+
+
+    }
+
+    public void OnUnlockWithGems()
+    {
 
     }
 

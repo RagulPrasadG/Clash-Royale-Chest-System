@@ -8,21 +8,38 @@ public class UnlockConfirmationPopup : PopUp
 {
     [SerializeField] Button closeButton;
     [SerializeField] Button unlockWithTimerButton;
-    [SerializeField] Button unlockWithGem;
+    [SerializeField] Button unlockWithGemButton;
 
     [SerializeField] Image chestImage;
     [SerializeField] TMP_Text gemText;
 
+    private EventService eventService;
+
     private void Awake()
     {
         closeButton.onClick.AddListener(Hide);
+        unlockWithTimerButton.onClick.AddListener(OnClickUnlockWithTimer);
+        unlockWithGemButton.onClick.AddListener(OnClickUnlockWithGems);
     }
 
-    
-    public void Init(ChestController chestController)
+    public void OnClickUnlockWithTimer()
+    {
+        this.eventService.onClickUnlockWithTimer.RaiseEvent();
+        Hide();
+    }
+
+    public void OnClickUnlockWithGems()
+    {
+        this.eventService.onClickUnlockWithGems.RaiseEvent();
+        Hide();
+    }
+
+    public void Init(ChestController chestController,EventService eventService)
     {
         this.chestImage.sprite = chestController.Data.chestDataSO.chestSprite;
         this.gemText.text = chestController.GetOpenNowCost().ToString();
-        
+        this.eventService = eventService;
     }
+
+   
 }

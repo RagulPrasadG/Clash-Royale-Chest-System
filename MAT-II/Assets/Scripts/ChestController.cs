@@ -9,8 +9,11 @@ public class ChestController
     private ChestData chestData;
     private float totalTimeInSeconds;
     private WaitForSeconds waitSeconds = new WaitForSeconds(1f);
-    public ChestData Data => chestData;
     private EventService eventService;
+
+
+    public ChestData Data => chestData;
+   
 
     public ChestController(ChestView chestViewPrefab,ChestDataScriptableObject chestDataScriptableObject, EventService eventService)
     {
@@ -25,6 +28,7 @@ public class ChestController
         this.chestData.currentTime = totalTimeInSeconds;
         this.eventService = eventService;
         SetChestStatus(ChestStatus.LOCKED);
+        FormatChestTimer(totalTimeInSeconds);
     }
 
     public IEnumerator StartTimer()
@@ -36,14 +40,14 @@ public class ChestController
         }
     }
 
-    public void Unlock()
+    public void StartUnlockTimer()
     {
         if (this.chestData.chestStatus == ChestStatus.UNLOCKING ||
             this.chestData.chestStatus == ChestStatus.UNLOCKED)
             return;
 
         this.chestData.chestStatus = ChestStatus.UNLOCKING;
-        this.chestView.UpdateChestStatusText("Unlocking...");
+        this.chestView.UpdateChestStatusText("UNLOCKING..");
         this.chestView.StartTimerCouroutine();
 
     }
@@ -57,7 +61,7 @@ public class ChestController
 
         if (chestData.currentTime >= 0)
         {
-            FormatTime(chestData.currentTime);
+            FormatChestTimer(chestData.currentTime);
         }
         else
         {
@@ -68,8 +72,18 @@ public class ChestController
     public void SetChestStatus(ChestStatus chestStatus)
     {
         this.chestData.chestStatus = chestStatus;
-        if (chestStatus == ChestStatus.LOCKED)
-            chestView.UpdateChestStatusText("LOCKED");
+        switch (chestStatus)
+        {
+            case ChestStatus.LOCKED:
+                chestView.UpdateChestStatusText("LOCKED");
+                break;
+            case ChestStatus.QUEUED:
+                chestView.UpdateChestStatusText("QUEUED");
+                break;
+        }
+
+      
+            
     }
 
     public void SetSlot(ChestSlotController chestSlotController)
@@ -78,23 +92,25 @@ public class ChestController
         this.chestView.transform.position = chestSlotController.View.transform.position;
     }
 
-    public void SetParent(RectTransform parent)
-    {
-        chestView.transform.SetParent(parent);
+    public void SetParent(RectTransform parent) => chestView.transform.SetParent(parent);
 
-    }
-
-    public void FormatTime(float seconds)
+    public void FormatChestTimer(float seconds)
     {
         TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
         string timerFormat;
         if (timeSpan.Hours > 0)
         {
-            timerFormat = $"{timeSpan.Hours}h:{timeSpan.Minutes}m";
+            if(timeSpan.Minutes > 0)
+              timerFormat = $"{timeSpan.Hours}h:{timeSpan.Minutes}m";
+            else
+              timerFormat = $"{timeSpan.Hours}h";
         }
         else if (timeSpan.Minutes > 0)
         {
-            timerFormat =  $"{timeSpan.Minutes}m:{timeSpan.Seconds}s";
+            if(timeSpan.Seconds > 0)
+               timerFormat =  $"{timeSpan.Minutes}m:{timeSpan.Seconds}s";
+            else
+               timerFormat = $"{timeSpan.Minutes}m";
         }
         else
         {
@@ -111,4 +127,5 @@ public class ChestController
 
     public void Destroy() => UnityEngine.Object.Destroy(this.chestView.gameObject);
 
+    public void RemoveListeners() => this.chestView.RemoveListeners();
 }

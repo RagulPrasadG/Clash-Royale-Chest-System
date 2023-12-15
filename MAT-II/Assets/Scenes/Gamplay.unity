@@ -1023,7 +1023,7 @@ MonoBehaviour:
   chestView: {fileID: 2376054423044687955, guid: 74afddc30f4a78e44a54f5f2cf5e8999, type: 3}
   gameDataScriptableObject: {fileID: 11400000, guid: 4d939a16e456cc24cbd080fc83213730, type: 2}
   maxSlot: 4
-  maxQueue: 1
+  maxQueue: 2
 --- !u!1 &2137342394
 GameObject:
   m_ObjectHideFlags: 0

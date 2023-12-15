@@ -4,7 +4,8 @@ public enum ChestStatus
     LOCKED,
     UNLOCKING,
     UNLOCKED,
-    COLLECTED
+    COLLECTED,
+    QUEUED
 }
 public enum ChestType
 {

@@ -16,7 +16,8 @@ public class UnlockWithGemsCommand : ICommand
     public void Execute() => chestService.OpenWithGems();
     public void Undo()
     {
-        chestService.UndoOpenWithGems(chestController);
+        if(chestController != null)
+          chestService.UndoOpenWithGems(chestController);
     }
 
 }

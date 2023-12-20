@@ -168,6 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 1435623824}
+  coinText: {fileID: 1881405206}
+  gemText: {fileID: 1144819077}
   undoButton: {fileID: 1361342428}
   addChestButton: {fileID: 1297591134}
   chestService: {fileID: 2077400304}

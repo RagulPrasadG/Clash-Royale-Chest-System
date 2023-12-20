@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIService : MonoBehaviour
 {
     [SerializeField] RectTransform canvas;
+    [SerializeField] TMP_Text coinText;
+    [SerializeField] TMP_Text gemText;
     [SerializeField] Button undoButton;
     [SerializeField] Button addChestButton;
     [SerializeField] ChestService chestService;
@@ -50,9 +53,10 @@ public class UIService : MonoBehaviour
     public void ShowRewardsPanel(List<RewardData> rewardData)
     {
         RewardsPanel rewardsPanel = popUpService.CreatePopup(PopupType.REWARDSPANEL, canvas) as RewardsPanel;
-        rewardsPanel.Init(rewardData);
+        rewardsPanel.Init(rewardData,gameService);
         rewardsPanel.Show();
     }
+
     public void ShowNotEnoughGemsPanel()
     {
 
@@ -60,5 +64,10 @@ public class UIService : MonoBehaviour
 
     public void OnUndoButtonClicked() => gameService.Undo();
 
+    public void UpdateCurrencyUI()
+    {
+        coinText.text = gameService.Coins.ToString();
+        gemText.text = gameService.Gems.ToString();
+    }
 
 }

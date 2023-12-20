@@ -9,8 +9,32 @@ public class GameService : MonoBehaviour
     public EventService eventService;
     public CommandInvoker commandInvoker;
 
-    public int coinsAmount = 100;
-    public int gemsAmount = 100;
+    [SerializeField] private int coins = 100;
+    [SerializeField] private int gems = 100;
+
+    public int Coins { 
+        get
+        {
+            return coins;
+        }
+        private set 
+        {
+            coins = value;
+            uIService.UpdateCurrencyUI();
+        }
+    }
+    public int Gems
+    {
+        get
+        {
+            return gems;
+        }
+        private set
+        {
+            gems = value;
+            uIService.UpdateCurrencyUI();
+        }
+    }
 
     public void Awake()
     {
@@ -21,6 +45,30 @@ public class GameService : MonoBehaviour
         
     }
 
-    public void Undo() => commandInvoker.Undo();
+    private void Start()
+    {
+        uIService.UpdateCurrencyUI();    
+    }
 
+    public void AddCoinAmount(int amount)
+    {
+        Coins += amount;
+    }
+
+    public void ReduceCoinAmount(int amount)
+    {
+        Coins -= amount;
+    }
+
+    public void AddGemAmount(int amount)
+    {
+        Gems += amount;
+    }
+
+    public void ReduceGemAmount(int amount)
+    {
+        Gems -= amount;
+    }
+
+    public void Undo() => commandInvoker.Undo();
 }

@@ -11,11 +11,14 @@ public class ChestService : MonoBehaviour
     [SerializeField] ChestView chestView;
     [SerializeField] GameDataScriptableObject gameDataScriptableObject;
 
+    private List<ChestSlotController> slots = new List<ChestSlotController>();
+    private Queue<ChestController> chestsQueue = new Queue<ChestController>();
+    private ChestController selectedChest;
+
+
+    private GameService gameService;
     private EventService eventService;
     private UIService uIService;
-    private List<ChestSlotController> slots = new List<ChestSlotController>();
-    private ChestController selectedChest;
-    private Queue<ChestController> chestsQueue = new Queue<ChestController>();
 
     [Space(10)]
     [Header("CONFIG")]
@@ -27,10 +30,11 @@ public class ChestService : MonoBehaviour
         CreateSlots();  
     }
 
-    public void Init(EventService eventService,UIService uIService)
+    public void Init(EventService eventService,UIService uIService,GameService gameService)
     {
         this.eventService = eventService;
         this.uIService = uIService;
+        this.gameService = gameService;
         SetEvents();
     }
 
@@ -92,9 +96,17 @@ public class ChestService : MonoBehaviour
 
     }
 
-    public void OnUnlockWithGems()
+    public void OnUnlockWithGems(ChestController chestController)
     {
-
+        selectedChest = chestController;
+        if(selectedChest.GetOpenNowCost() > gameService.gemsAmount)
+        {
+            uIService.ShowNotEnoughGemsPanel();
+            return;
+        }
+        chestsQueue.Enqueue(selectedChest);
+        selectedChest.Unlock();
+        selectedChest.StopTimer();
     }
 
     public void TryAddChest()
@@ -119,7 +131,6 @@ public class ChestService : MonoBehaviour
 
     public void OnChestTimerComplete(ChestController chestController)
     {
-        chestController.SetChestStatus(ChestStatus.UNLOCKED);
         chestsQueue.Dequeue();
         ChestController nextchestController;
         chestsQueue.TryPeek(out nextchestController);

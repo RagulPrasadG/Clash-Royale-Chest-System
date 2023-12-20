@@ -49,5 +49,10 @@ public class UIService : MonoBehaviour
         rewardsPanel.Init(rewardData);
         rewardsPanel.Show();
     }
+    public void ShowNotEnoughGemsPanel()
+    {
+
+    }
+
 
 }

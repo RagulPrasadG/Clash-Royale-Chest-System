@@ -6,9 +6,11 @@ using TMPro;
 public class ChestView : MonoBehaviour
 {
     public Button openButton;
+    public Button openNowButton;
+    public TMP_Text chestTimerText;
     [SerializeField] Button chestButton;
     [SerializeField] TMP_Text chestStatusText;
-    [SerializeField] TMP_Text chestTimerText;
+    [SerializeField] TMP_Text openNowCostText;
     [SerializeField] Image chestImage;
 
 
@@ -17,12 +19,20 @@ public class ChestView : MonoBehaviour
     private void Awake()
     {
         chestButton.onClick.AddListener(OnClickChest);
-        openButton.onClick.AddListener(OnUnlockChest);
+        openButton.onClick.AddListener(OnOpenChest);
+        openNowButton.onClick.AddListener(OnOpenWithGems);
     }
+
+    public void Update()
+    {
+        this.openNowCostText.text = chestController.GetOpenNowCost().ToString();
+    }
+
+    public void OnOpenWithGems() => chestController.OnUnlockWithGems();
 
     public void OnClickChest() => chestController.OnClickChest();
 
-    public void OnUnlockChest() => chestController.Unlock();
+    public void OnOpenChest() => chestController.Open();
 
     public void SetController(ChestController chestController) => this.chestController = chestController;
 

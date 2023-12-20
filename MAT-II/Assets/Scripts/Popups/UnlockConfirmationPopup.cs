@@ -14,6 +14,7 @@ public class UnlockConfirmationPopup : PopUp
     [SerializeField] TMP_Text gemText;
 
     private EventService eventService;
+    private ChestController selectedChestController;
 
     private void Awake()
     {
@@ -30,16 +31,18 @@ public class UnlockConfirmationPopup : PopUp
 
     public void OnClickUnlockWithGems()
     {
-        this.eventService.onClickUnlockWithGems.RaiseEvent();
+        this.eventService.onClickUnlockWithGems.RaiseEvent(selectedChestController);
         Hide();
     }
 
     public void Init(ChestController chestController,EventService eventService)
     {
+        this.selectedChestController = chestController;
         this.chestImage.sprite = chestController.Data.chestDataSO.chestSprite;
         this.gemText.text = chestController.GetOpenNowCost().ToString();
         this.eventService = eventService;
     }
 
-   
+  
+
 }

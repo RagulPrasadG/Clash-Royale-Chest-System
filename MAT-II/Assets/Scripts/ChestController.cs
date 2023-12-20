@@ -33,7 +33,7 @@ public class ChestController
 
     public IEnumerator StartTimer()
     {
-        while (chestData.currentTime >= 0)
+        while (chestData.currentTime > 0)
         {
             yield return waitSeconds;
             UpdateTimer();
@@ -47,6 +47,7 @@ public class ChestController
             return;
 
         this.chestData.chestStatus = ChestStatus.UNLOCKING;
+        this.chestView.openNowButton.gameObject.SetActive(true);
         this.chestView.UpdateChestStatusText("UNLOCKING..");
         this.chestView.StartTimerCouroutine();
 
@@ -65,9 +66,8 @@ public class ChestController
         }
         else
         {
-            chestView.StopCoroutine(StartTimer());
-            this.chestView.openButton.gameObject.SetActive(true);
-            this.eventService.onChestTimerComplete.RaiseEvent(this);
+            StopTimer();
+            Unlock();
         }
     }
 
@@ -91,7 +91,24 @@ public class ChestController
             
     }
 
-    public void Unlock() => this.eventService.onChestUnlocked.RaiseEvent(this);
+    public void StopTimer()
+    {
+        this.chestData.currentTime = 0;
+        this.chestView.chestTimerText.gameObject.SetActive(false);
+        chestView.StopCoroutine(StartTimer());
+    }
+
+    public void OnUnlockWithGems() => this.eventService.onClickUnlockWithGems.RaiseEvent(this);
+
+    public void Unlock()
+    {
+        SetChestStatus(ChestStatus.UNLOCKED);
+        this.chestView.openButton.gameObject.SetActive(true);
+        this.chestView.openNowButton.gameObject.SetActive(false);
+        this.eventService.onChestTimerComplete.RaiseEvent(this);
+    }
+
+    public void Open() => this.eventService.onChestUnlocked.RaiseEvent(this);
 
 
     public void SetSlot(ChestSlotController chestSlotController)

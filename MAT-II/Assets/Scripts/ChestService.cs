@@ -99,14 +99,34 @@ public class ChestService : MonoBehaviour
     public void OnUnlockWithGems(ChestController chestController)
     {
         selectedChest = chestController;
-        if(selectedChest.GetOpenNowCost() > gameService.gemsAmount)
+        if (selectedChest.GetOpenNowCost() > gameService.gemsAmount)
         {
             uIService.ShowNotEnoughGemsPanel();
             return;
         }
+
+        UnlockWithGemsCommand unlockWithGemsCommand = new UnlockWithGemsCommand(chestController,this);
+        gameService.commandInvoker.ProcessCommand(unlockWithGemsCommand);
+        
+    }
+
+    public void OpenWithGems()
+    {
         chestsQueue.Enqueue(selectedChest);
         selectedChest.Unlock();
         selectedChest.StopTimer();
+        this.gameService.gemsAmount -= selectedChest.GetOpenNowCost();
+    }
+
+    public void UndoOpenWithGems(ChestController chestController)
+    {
+        chestsQueue.Enqueue(selectedChest);
+        selectedChest.Lock();
+
+        if (chestController.Data.currentTime > 0)   //if the chest is unlocking while instantopen then resume the timer or keep the chest locked
+            selectedChest.StartUnlockTimer();
+
+        this.gameService.gemsAmount += selectedChest.GetOpenNowCost();
     }
 
     public void TryAddChest()

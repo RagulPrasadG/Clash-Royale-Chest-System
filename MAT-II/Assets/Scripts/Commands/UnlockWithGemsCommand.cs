@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class UnlockWithGemsCommand : ICommand
 {
-    public ChestData chestData;
+    private ChestController chestController;
+    private ChestService chestService;
 
-    public void Execute()
+    public UnlockWithGemsCommand(ChestController chestController, ChestService chestService)
     {
-
+        this.chestController = chestController;
+        this.chestService = chestService;   
     }
 
+    public void Execute() => chestService.OpenWithGems();
     public void Undo()
     {
-
+        chestService.UndoOpenWithGems(chestController);
     }
 
 }

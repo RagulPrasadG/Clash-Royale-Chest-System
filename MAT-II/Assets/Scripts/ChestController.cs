@@ -33,7 +33,7 @@ public class ChestController
 
     public IEnumerator StartTimer()
     {
-        while (chestData.currentTime > 0)
+        while (chestData.currentTime >= 0)
         {
             yield return waitSeconds;
             UpdateTimer();
@@ -93,9 +93,8 @@ public class ChestController
 
     public void StopTimer()
     {
-        this.chestData.currentTime = 0;
         this.chestView.chestTimerText.gameObject.SetActive(false);
-        chestView.StopCoroutine(StartTimer());
+        chestView.StopAllCoroutines();
     }
 
     public void OnUnlockWithGems() => this.eventService.onClickUnlockWithGems.RaiseEvent(this);
@@ -106,6 +105,17 @@ public class ChestController
         this.chestView.openButton.gameObject.SetActive(true);
         this.chestView.openNowButton.gameObject.SetActive(false);
         this.eventService.onChestTimerComplete.RaiseEvent(this);
+    }
+
+    public void Lock()
+    {
+        SetChestStatus(ChestStatus.LOCKED);
+        this.chestView.openButton.gameObject.SetActive(false);
+        this.chestView.openNowButton.gameObject.SetActive(false);
+        this.chestView.chestTimerText.gameObject.SetActive(true);
+
+        if(chestData.currentTime != totalTimeInSeconds)
+           this.chestData.currentTime = totalTimeInSeconds;
     }
 
     public void Open() => this.eventService.onChestUnlocked.RaiseEvent(this);
@@ -144,10 +154,10 @@ public class ChestController
         chestView.UpdateChestTimerText(timerFormat);
     }
 
-    public float GetOpenNowCost()
+    public int GetOpenNowCost()
     {
         float unlockCost = Mathf.Ceil((this.chestData.currentTime / 60) / 10);
-        return unlockCost;
+        return (int)unlockCost;
     }
 
     public void Destroy() => UnityEngine.Object.Destroy(this.chestView.gameObject);

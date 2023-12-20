@@ -7,7 +7,7 @@ public class GameService : MonoBehaviour
     [SerializeField] UIService uIService;
     [SerializeField] ChestService chestService;
     public EventService eventService;
-
+    public CommandInvoker commandInvoker;
 
     public int coinsAmount = 100;
     public int gemsAmount = 100;
@@ -15,10 +15,12 @@ public class GameService : MonoBehaviour
     public void Awake()
     {
         eventService = new EventService();
-        uIService.Init(eventService);
+        uIService.Init(eventService,this);
         chestService.Init(eventService,uIService,this);
-        
+        commandInvoker = new CommandInvoker();
         
     }
+
+    public void Undo() => commandInvoker.Undo();
 
 }

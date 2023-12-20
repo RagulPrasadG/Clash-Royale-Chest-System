@@ -5,9 +5,9 @@ using UnityEngine;
 public class CommandInvoker
 {
     public Stack<ICommand> commands;
-    public CommandInvoker(Stack<ICommand> commands)
+    public CommandInvoker()
     {
-        this.commands = commands;
+        this.commands = new Stack<ICommand>();
     }
 
     public void ProcessCommand(ICommand command)
@@ -18,7 +18,10 @@ public class CommandInvoker
 
     public void Undo()
     {
-        commands.Pop().Execute();
+        ICommand command;
+        commands.TryPop(out command);
+        if (command != null)
+            command.Undo();
     }
 
 }

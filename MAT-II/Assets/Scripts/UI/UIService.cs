@@ -6,21 +6,25 @@ using UnityEngine.UI;
 public class UIService : MonoBehaviour
 {
     [SerializeField] RectTransform canvas;
+    [SerializeField] Button undoButton;
     [SerializeField] Button addChestButton;
     [SerializeField] ChestService chestService;
     [SerializeField] PopUpServiceScriptableObject popUpService;
 
     private EventService eventService;
+    private GameService gameService;
 
-    public void Init(EventService eventService)
+    public void Init(EventService eventService,GameService gameService)
     {
         this.eventService = eventService;
+        this.gameService = gameService;
         SetEvents();
     }
 
     public void SetEvents()
     {
         addChestButton?.onClick.AddListener(OnAddChestButtonClicked);
+        undoButton?.onClick.AddListener(OnUndoButtonClicked);
     }
 
     public void OnAddChestButtonClicked()
@@ -53,6 +57,8 @@ public class UIService : MonoBehaviour
     {
 
     }
+
+    public void OnUndoButtonClicked() => gameService.Undo();
 
 
 }

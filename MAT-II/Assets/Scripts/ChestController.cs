@@ -48,7 +48,6 @@ public class ChestController
 
         this.chestData.chestStatus = ChestStatus.UNLOCKING;
         this.chestView.openNowButton.gameObject.SetActive(true);
-        this.chestView.UpdateChestStatusText("UNLOCKING..");
         this.chestView.StartTimerCouroutine();
 
     }

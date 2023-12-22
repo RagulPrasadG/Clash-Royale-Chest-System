@@ -98,7 +98,7 @@ public class ChestService : MonoBehaviour
         selectedChest = chestController;
         if (selectedChest.GetOpenNowCost() > gameService.Gems)
         {
-            uIService.ShowNotEnoughGemsPanel();
+            uIService.ShowInfoPopup("Not Enough Gems to unlock!!!");
             return;
         }
 

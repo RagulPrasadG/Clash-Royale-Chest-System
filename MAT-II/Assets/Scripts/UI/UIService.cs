@@ -57,10 +57,6 @@ public class UIService : MonoBehaviour
         rewardsPanel.Show();
     }
 
-    public void ShowNotEnoughGemsPanel()
-    {
-
-    }
 
     public void OnUndoButtonClicked() => gameService.Undo();
 

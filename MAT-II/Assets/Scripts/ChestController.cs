@@ -47,6 +47,7 @@ public class ChestController
             return;
 
         this.chestData.chestStatus = ChestStatus.UNLOCKING;
+        this.chestView.chestTimerText.gameObject.SetActive(true);
         this.chestView.openNowButton.gameObject.SetActive(true);
         this.chestView.StartTimerCouroutine();
 
@@ -90,6 +91,13 @@ public class ChestController
             
     }
 
+    public void ResumeTimer()
+    {
+        this.chestView.chestTimerText.gameObject.SetActive(true);
+        SetChestStatus(ChestStatus.LOCKED);
+        StartUnlockTimer();
+    }
+
     public void StopTimer()
     {
         this.chestView.chestTimerText.gameObject.SetActive(false);
@@ -115,6 +123,14 @@ public class ChestController
 
         if(chestData.currentTime != totalTimeInSeconds)
            this.chestData.currentTime = totalTimeInSeconds;
+    }
+
+    public void SetQueued()
+    {
+        SetChestStatus(ChestStatus.QUEUED);
+        this.chestView.openButton.gameObject.SetActive(false);
+        this.chestView.openNowButton.gameObject.SetActive(false);
+        
     }
 
     public void Open() => this.eventService.onChestUnlocked.RaiseEvent(this);

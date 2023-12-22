@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ChestService : MonoBehaviour
 {
-    
     [SerializeField] RectTransform slotContainer;
     [SerializeField] ChestSlotView chestSlotView;
     [SerializeField] ChestView chestView;
@@ -71,8 +70,8 @@ public class ChestService : MonoBehaviour
     {
         if (chestsQueue.Count > maxQueue)
             return;
-            
-        if(chestsQueue.Count > 0)
+
+        if (chestsQueue.Count > 0)
         {
             foreach (var chest in chestsQueue)
             {
@@ -92,8 +91,6 @@ public class ChestService : MonoBehaviour
         selectedChest.RemoveListeners();
         chestsQueue.Enqueue(selectedChest);
         selectedChest = null;
-
-
     }
 
     public void OnUnlockWithGems(ChestController chestController)
@@ -120,13 +117,33 @@ public class ChestService : MonoBehaviour
 
     public void UndoOpenWithGems(ChestController chestController)
     {
-        chestsQueue.Enqueue(selectedChest);
-        selectedChest.Lock();
+        //if the chest is unlocking while instantopen then resume the timer or keep the chest locked
+        if (chestController.Data.currentTime < chestController.Data.chestDataSO.unlockTime * 60)
+        {
+            if (chestsQueue.Count > 0)
+            {
+                foreach (var chest in chestsQueue)
+                {
+                    if (chest.Data.chestStatus == ChestStatus.UNLOCKING ||
+                        chest.Data.chestStatus == ChestStatus.QUEUED)
 
-        if (chestController.Data.currentTime == chestController.Data.chestDataSO.unlockTime)   //if the chest is unlocking while instantopen then resume the timer or keep the chest locked
-            selectedChest.StartUnlockTimer();
+                    {
+                        chestController.SetQueued();
+                        chestsQueue.Enqueue(chestController);
+                        return;
+                    }
 
-        gameService.AddGemAmount(selectedChest.GetOpenNowCost());
+                }
+            }
+
+            chestsQueue.Enqueue(chestController); 
+            chestController.ResumeTimer();
+        }
+            
+        else
+            chestController.Lock();
+            
+        gameService.AddGemAmount(chestController.GetOpenNowCost());
     }
 
     public void TryAddChest()
